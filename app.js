@@ -54,7 +54,7 @@ app.get( '/', function ( req, res ) {
                 data.ville = adresse.split( '' )[0]
                 data.cp = adresse.split( '' )[1]
 
-                data.prixSurfaceHabitable = ( prix[0] * 1000 + prix[1] ) / data.surface
+                data.prixAuMetreCarre = ( prix[0] * 1000 + prix[1] ) / data.surface
 
             }
 
@@ -66,7 +66,7 @@ app.get( '/', function ( req, res ) {
                 surface: data.surface,
                 ville: data.ville,
                 cp: data.cp,
-                prixSurfaceHabitable: data.prixSurfaceHabitable,
+                prixAuMetreCarre: data.prixAuMetreCarre,
             });
         }
     })
