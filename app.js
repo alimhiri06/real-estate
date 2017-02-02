@@ -19,34 +19,54 @@ app.set( 'view engine', 'ejs' );
 app.use( '/assets', express.static( 'assets' ) );
 
 var data = {
-    inf_prix: 0
+    prix: 0,
+    type: "",
+    pieces: "",
+    surface: 0,
+    ville: "",
+    cp: "",
+    prixSurfaceHabitable: 0,
 }
 
 
 //makes the server respond to the '/' route and serving the 'home.ejs' template in the 'views' directory
+var url = "https://www.leboncoin.fr/ventes_immobilieres/1076257949.htm?ca=12_s"
 
 app.get( '/', function ( req, res ) {
-    request( 'https://www.leboncoin.fr/ventes_immobilieres/1076257949.htm?ca=12_s', function ( error, response, body ) {
+    request( url, function ( error, response, body ) {
         if ( !error && response.statusCode == 200 ) {
             var $ = cheerio.load( body );
             {
-                var price = $( 'span.value' );
-                var pr = price.eq( 0 ).text().trim().split( '' );
-                var pri = pr[0] + pr[1];
+                var prixx = $( 'span.value' );
+                var prix = prixx.eq( 0 ).text().trim().split( '' );
+                data.price = prix[0] + prix[1];
 
-                //var surface =
-                var type = $( 'span.value' )
+                var typee = $( 'span.value' )
+                data.type = typee.eq( 2 ).text()
 
-                var hab = ( parseFloat( pr[0] * 1000 + parseFloat( pr[1] ) ) / parseFloat( surface ) )
-                data = {
-                    inf_prix: pri
+                var piecess = $( 'span.value' )
+                data.pieces = piecess.eq( 3 ).text()
 
-                }
+                var surfacee = $( 'span.value' )
+                data.surface = surfacee.eq( 4 ).text()
+
+                var adresse = $( 'span.value[itemprop=address]' )
+                data.ville = adresse.split( '' )[0]
+                data.cp = adresse.split( '' )[1]
+
+                data.prixSurfaceHabitable = ( prix[0] * 1000 + prix[1] ) / data.surface
+
             }
 
 
             res.render( 'home', {
-                prix: data.inf_prix
+                prix: data.price,
+                type: data.type,
+                pieces: data.pieces,
+                surface: data.surface,
+                ville: data.ville,
+                cp: data.cp,
+                prixSurfaceHabitable: data.prixSurfaceHabitable,
             });
         }
     })
