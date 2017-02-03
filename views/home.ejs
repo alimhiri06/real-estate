@@ -9,23 +9,31 @@
 <body>
     <p>Affichage des propriétés du bien concerné et est-ce que c'est une bonne offre ?
         <br></br>
-        <%= "Le prix est de " + prix + " euros." %>
+        <%= "Le prix est de " + prix%>
         <br></br>
         <%= "Type du bien immobilier: " + type %>
         <br></br>
-        <%= "La surface est de " + surface + "m²." %>
+        <%= "La surface est de " + surface%>
         <br></br>
-        <%= "Le bien se trouve à " + ville + ", " + cp %>
+        <%= "Nombre de pieces: " + pieces%>
+        <br></br>
+        <%= "Le bien se trouve à " + adresse%>
         <br></br>
         <%= "Le prix au m² est de " + prixAuMetreCarre + " euros." %>
         <br></br>
         <%= "Prix du comparateur" %>
         <br></br>
         <%= "Conclusion: " %>
-
-
-
     </p>
+    <form action= "/" method="GET">
+        
+        <input type="text" name="urlLBC"/>
+        <button type="submit">
+            OK
+        </button>
+    
+    </form>
+    
 </body>
 
 </html>

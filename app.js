@@ -23,54 +23,65 @@ var data = {
     type: "",
     pieces: "",
     surface: 0,
-    ville: "",
-    cp: "",
+    adresse: "",
     prixSurfaceHabitable: 0,
 }
 
 
 //makes the server respond to the '/' route and serving the 'home.ejs' template in the 'views' directory
-var url = "https://www.leboncoin.fr/ventes_immobilieres/1074660822.htm?ca=12_s"
+//var url = "https://www.leboncoin.fr/ventes_immobilieres/1074660822.htm?ca=12_s"
 
 app.get( '/', function ( req, res ) {
-    request( url, function ( error, response, body ) {
-        if ( !error && response.statusCode == 200 ) {
-            var $ = cheerio.load( body );
-            {
-                var prixx = $( 'span.value' );
-                var prix = prixx.eq( 0 ).text().split( '' );
 
-                data.price = prix[0];
+    var url = req.query.urlLBC
+    if ( url ) {
+        request( url, function ( error, response, body ) {
+            if ( !error && response.statusCode == 200 ) {
+                var $ = cheerio.load( body );
+                {
+                    //le trim enlève tous les espaces au début et à la fin
 
-                var typee = $( 'span.value' )
-                data.type = typee.eq( 2 ).text()
+                    var prixx = $( 'h2.item_price.clearfix span.value ' ).text().trim().split( ' ' );
+                    data.prix = prixx[0] + prixx[1];
 
-                var piecess = $( 'span.value' )
-                data.pieces = piecess.eq( 3 ).text()
+                    var typee = $( $( 'h2.clearfix span.value' ).get( 3 ) ).text()
+                    data.type = typee
 
-                var surfacee = $( 'span.value' )
-                data.surface = surfacee.eq( 4 ).text()
+                    var piecess = $( $( 'h2.clearfix span.value' ).get( 4 ) ).text()
+                    data.pieces = piecess
 
-                var adresse = $( 'span.value[itemprop=address]' ).text()
-                data.ville = adresse.split( '' )[0]
-                data.cp = adresse.split( '' )[1]
+                    var surfacee = $( $( 'h2.clearfix span.value' ).get( 5 ) ).text()
+                    data.surface = surfacee
 
-                data.prixAuMetreCarre = ( prix[0] * 1000 + prix[1] ) / data.surface
+                    //var adresse = $( $( 'h2.clearfix span.value' ).get( 3 ) ).text()
+                    data.adresse = $( $( 'h2.clearfix span.value' ).get( 1 ) ).text()
 
 
+                    //data.cp = $( $( 'h2.clearfix span.value' ).get( 0 ) ).text()
+
+                    data.prixAuMetreCarre = parseInt( data.prix ) / parseInt( data.surface )
+                }
+                res.render( 'home', {
+                    prix: data.prix,
+                    type: data.type,
+                    pieces: data.pieces,
+                    surface: data.surface,
+                    adresse: data.adresse,
+                    prixAuMetreCarre: data.prixAuMetreCarre,
+                });
             }
-
-        }
-    })
-    res.render( 'home', {
-        prix: data.price,
-        type: data.type,
-        pieces: data.pieces,
-        surface: data.surface,
-        ville: data.ville,
-        cp: data.cp,
-        prixAuMetreCarre: data.prixAuMetreCarre,
-    });
+        })
+    }
+    else {
+        res.render( 'home', {
+            prix: data.prix,
+            type: data.type,
+            pieces: data.pieces,
+            surface: data.surface,
+            adresse: data.adresse,
+            prixAuMetreCarre: data.prixAuMetreCarre,
+        });
+    }
 });
 
 
