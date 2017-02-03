@@ -57,6 +57,9 @@ app.get( '/', function ( req, res ) {
                     data.adresse = $( $( 'h2.clearfix span.value' ).get( 1 ) ).text()
 
 
+                    var ville = data.adresse.split( ' ' )[0];
+                    var codePostal = data.adresse.split( ' ' )[1];
+
                     //data.cp = $( $( 'h2.clearfix span.value' ).get( 0 ) ).text()
 
                     data.prixAuMetreCarre = parseInt( data.prix ) / parseInt( data.surface )
@@ -70,6 +73,17 @@ app.get( '/', function ( req, res ) {
                     prixAuMetreCarre: data.prixAuMetreCarre,
                 });
             }
+
+
+            request( 'http://www.meilleursagents.com/prix-immobilier/' + ville.toLowerCase() + '-' + codePostal, function ( error, response, body ) {
+                if ( !error && response.statusCode == 200 ) {
+                    var $ = cheerio.load( body );
+
+                }
+
+            })
+
+
         })
     }
     else {
