@@ -30,7 +30,7 @@ var data = {
 
 
 //makes the server respond to the '/' route and serving the 'home.ejs' template in the 'views' directory
-var url = "https://www.leboncoin.fr/ventes_immobilieres/1076257949.htm?ca=12_s"
+var url = "https://www.leboncoin.fr/ventes_immobilieres/1074660822.htm?ca=12_s"
 
 app.get( '/', function ( req, res ) {
     request( url, function ( error, response, body ) {
@@ -38,8 +38,9 @@ app.get( '/', function ( req, res ) {
             var $ = cheerio.load( body );
             {
                 var prixx = $( 'span.value' );
-                var prix = prixx.eq( 0 ).text().trim().split( '' );
-                data.price = prix[0] + prix[1];
+                var prix = prixx.eq( 0 ).text().split( '' );
+
+                data.price = prix[0];
 
                 var typee = $( 'span.value' )
                 data.type = typee.eq( 2 ).text()
@@ -50,26 +51,26 @@ app.get( '/', function ( req, res ) {
                 var surfacee = $( 'span.value' )
                 data.surface = surfacee.eq( 4 ).text()
 
-                var adresse = $( 'span.value[itemprop=address]' )
+                var adresse = $( 'span.value[itemprop=address]' ).text()
                 data.ville = adresse.split( '' )[0]
                 data.cp = adresse.split( '' )[1]
 
                 data.prixAuMetreCarre = ( prix[0] * 1000 + prix[1] ) / data.surface
 
+
             }
 
-
-            res.render( 'home', {
-                prix: data.price,
-                type: data.type,
-                pieces: data.pieces,
-                surface: data.surface,
-                ville: data.ville,
-                cp: data.cp,
-                prixAuMetreCarre: data.prixAuMetreCarre,
-            });
         }
     })
+    res.render( 'home', {
+        prix: data.price,
+        type: data.type,
+        pieces: data.pieces,
+        surface: data.surface,
+        ville: data.ville,
+        cp: data.cp,
+        prixAuMetreCarre: data.prixAuMetreCarre,
+    });
 });
 
 
