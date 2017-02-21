@@ -7,33 +7,47 @@
 </head>
 
 <body>
-    <p>Affichage des propriétés du bien concerné et est-ce que c'est une bonne offre ?
+
+    <h2>
+        Comparateur de prix immobilier
         <br></br>
-        <%= "Le prix est de " + prix%>
-        <br></br>
-        <%= "Type du bien immobilier: " + type %>
-        <br></br>
-        <%= "La surface est de " + surface%>
-        <br></br>
-        <%= "Nombre de pieces: " + pieces%>
-        <br></br>
-        <%= "Le bien se trouve à " + adresse%>
-        <br></br>
-        <%= "Le prix au m² est de " + prixAuMetreCarre + " euros." %>
-        <br></br>
-        <%= "Prix du comparateur" %>
-        <br></br>
-        <%= "Conclusion: " %>
+
+    </h2>
+
+    <p>
+    Bienvenu sur notre site de comparaison du prix au m² de l'immobilier. Notre objectif est de vous 
+    dire si l'affaire que vous avez repéré est intéressante ou non.
     </p>
-    <form action= "/" method="GET">
-        
+
+    <p1>
+    Veuillez saisir le lien du bien à étudier ci-dessous :
+    </p1>
+
+    <form action= "/" method="GET"> 
         <input type="text" name="urlLBC"/>
         <button type="submit">
             OK
         </button>
-    
     </form>
-    
+
+    <p2>
+        
+        <br></br>
+        <%= "Cet(te) " + type + " vaut " + prix + " € et est situé(e) à " + adresse +"."%>
+        <br></br>
+        <%= "On y trouve " + pieces + " pièces et sa surface est de " + surface + " m²."%>
+        <br></br>
+        <%= "Enfin, sa classe énergie est la suivante : " + classeEnergie + "."%>
+        <br></br>
+        <%= "On trouve que le prix au m² de cet(te) " + type + " est de " + prixAuMetreCarre + " €." %>
+        <br></br>
+        <%= "Selon notre comparateur, le prix au m² à " + adresse + " pour un(e) " + type + " devrait être de " + prixComparateur + " €."%>
+    </p2>
+
+    <h1>
+        <%= "On en conclu que cette affaire semble être " + conclusion + "."%>
+    </h1>
+
 </body>
 
 </html>
